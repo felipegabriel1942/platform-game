@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "platform-game"
+    }
+  },
+  "defaultProject": "platform-game",
+  "cli": {
+    "analytics": "7f4645ff-0c1b-46ab-b36d-f4fc9f44597f"
+  }
 }
