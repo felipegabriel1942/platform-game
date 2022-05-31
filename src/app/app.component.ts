@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GameMapService } from './@services/game-map.service';
-import { Level } from './@models/level';
+import { Level } from './@models/level.model';
+import { GameObject } from './@models/game-object.model';
 
 @Component({
   selector: 'app-root',

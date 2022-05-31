@@ -1,5 +1,15 @@
-import { Player } from './player';
-import { Vector } from './vector';
+import { GameObjectFactory } from '../@factory/game-object.factory';
+import { Player } from './player.model';
+import { Vector } from './vector.model';
+
+export const enum objectsTypes {
+  PLAYER = '@',
+}
+type Char = '.' | '#';
+
+interface GameObjects {
+  [key: string]: any;
+}
 
 export class Level {
   public rows: string[][];
@@ -11,7 +21,7 @@ export class Level {
     '.': 'empty',
     '#': 'wall',
     '+': 'lava',
-    '@': Player,
+    '@': 'player',
     o: 'coin',
     '=': 'lava',
     '|': 'lava',
@@ -32,22 +42,29 @@ export class Level {
   // TODO: Função fazendo muita coisa
   private createRows(map: string): string[][] {
     let rows: string[][];
+
     rows = map
       .split('\n')
       .map((m) => m.trim())
       .map((m) => [...m]);
 
     return rows
-      .map((row, y) => {
-        return row.map((ch, x) => {
-          const type = this.levelChars[ch];
+      .map((row, posY) => {
+        return row.map((objectType, posX) => {
+          const type = this.levelChars[objectType];
 
           if (typeof type === 'string') {
             return type;
           }
 
           // TODO: Realmente precisa ficar vazio, a referencia na rows?
-          this.startActors.push(type.create(new Vector(x, y)));
+          const gameObject = GameObjectFactory.buildGameObject(
+            objectType,
+            new Vector(posX, posY)
+          );
+
+          this.startActors.push(gameObject);
+          console.log(this.startActors);
 
           return 'empty';
         });
