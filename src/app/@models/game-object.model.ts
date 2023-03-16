@@ -1,13 +1,5 @@
-import { Vector } from './vector.model';
-
-export abstract class GameObject {
-  public position: Vector;
-
-  constructor(position: Vector) {
-    this.position = position;
-  }
-
-  public abstract get type(): string;
-
-  public abstract create(position: Vector): any;
+import { GameActor } from './game-actor.model';
+import { State } from './state.model';
+export abstract class GameObject extends GameActor {
+  public abstract collide(state: State): State;
 }

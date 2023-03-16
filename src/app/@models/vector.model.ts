@@ -1,16 +1,17 @@
 export class Vector {
-  public posX: number;
-  public posY: number;
+  public x: number;
+  public y: number;
 
-  constructor(posX: number, posY: number) {
-    this.posX = posX;
-    this.posY = posY;
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
   }
 
-  plus(lastPosition: Vector): Vector {
-    return new Vector(
-      this.posX + lastPosition.posX,
-      this.posY + lastPosition.posY
-    );
+  public plus(newPosition: Vector): Vector {
+    return new Vector(this.x + newPosition.x, this.y + newPosition.y);
+  }
+
+  public times(factor: number): Vector {
+    return new Vector(this.x * factor, this.y * factor);
   }
 }
