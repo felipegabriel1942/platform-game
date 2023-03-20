@@ -31,11 +31,13 @@ export class CanvasDisplay {
     this.canvas.nativeElement.remove();
   }
 
-  public syncState(state: State): void {
+  public syncState(lives: number, state: State): void {
     this.updateViewport(state);
     this.clearDisplay(state.status);
     this.drawBackground(state.level);
     this.drawActors(state.actors);
+    this.drawLivesQtd(lives);
+    this.drawCoinsLeft(state);
   }
 
   private updateViewport(state: State): void {
@@ -191,5 +193,22 @@ export class CanvasDisplay {
     this.ctx.translate(around, 0);
     this.ctx.scale(-1, 1);
     this.ctx.translate(-around, 0);
+  }
+
+  private drawLivesQtd(lives: number): void {
+    this.ctx.font = '16px Arial';
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillText('Vidas: ' + lives, 20, 40);
+  }
+
+  private drawCoinsLeft(state: State): void {
+    this.ctx.font = '16px Arial';
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillText(
+      'Moedas: ' +
+        state.actors.filter((a) => a.type() === GameActorTypeEnum.COIN).length,
+      this.ctx.canvas.width - 100,
+      40
+    );
   }
 }

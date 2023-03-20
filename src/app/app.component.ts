@@ -66,13 +66,12 @@ export class AppComponent implements OnInit {
 
     const maps = this.gameMapService.getGameMaps();
 
-    for (let level = 2; level < maps.length; ) {
+    for (let level = 0; level < maps.length; ) {
       if (life === 0) {
         return;
       }
 
-      const state = await this.runLevel(new Level(maps[level]));
-      console.log(state);
+      const state = await this.runLevel(life, new Level(maps[level]));
 
       this.gameState = state;
 
@@ -91,18 +90,19 @@ export class AppComponent implements OnInit {
     }
   }
 
-  public runLevel(level: Level): Promise<State> {
+  public runLevel(lives: number, level: Level): Promise<State> {
     const display = new CanvasDisplay(this.canvas, level);
     this.gameState = State.start(level);
 
     return new Promise((resolve) => {
       requestAnimationFrame((time) => {
-        this.frame(time, display, resolve);
+        this.frame(lives, time, display, resolve);
       });
     });
   }
 
   private frame(
+    lives: number,
     time: number,
     display: CanvasDisplay,
     resolve: any,
@@ -111,20 +111,20 @@ export class AppComponent implements OnInit {
     if (lastTime != null) {
       const timeStep = Math.min(time - lastTime, 100) / 1000;
 
-      if (this.animate(timeStep, display) === false) {
+      if (this.animate(lives, timeStep, display) === false) {
         resolve(this.gameState);
         return;
       }
     }
 
     requestAnimationFrame((actualTime: number) => {
-      this.frame(actualTime, display, resolve, time);
+      this.frame(lives, actualTime, display, resolve, time);
     });
   }
 
-  private animate(time: number, display: CanvasDisplay): boolean {
+  private animate(lives: number, time: number, display: CanvasDisplay): boolean {
     this.gameState = this.gameState.update(time, this.direction);
-    display.syncState(this.gameState);
+    display.syncState(lives, this.gameState);
     return this.gameState.status === 'playing';
   }
 }

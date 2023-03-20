@@ -31,6 +31,7 @@ export class State {
     const actors = this.actors.map((actor) =>
       actor.update(time, this, direction)
     );
+
     let newState = new State(this.level, actors, this.status);
 
     if (newState.status !== 'playing') {
