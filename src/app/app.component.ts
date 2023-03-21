@@ -61,7 +61,6 @@ export class AppComponent implements OnInit {
   }
 
   public async runGame(): Promise<void> {
-    console.log('Game started....');
     let life = 3;
 
     const maps = this.gameMapService.getGameMaps();
@@ -84,7 +83,9 @@ export class AppComponent implements OnInit {
         life--;
 
         if (life === 0) {
-          console.log('Game Over....');
+          if (confirm('Fim de jogo!\nPressione "OK" para jogar novamente.')) {
+            life = 3;
+          }
         }
       }
     }
@@ -122,7 +123,11 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private animate(lives: number, time: number, display: CanvasDisplay): boolean {
+  private animate(
+    lives: number,
+    time: number,
+    display: CanvasDisplay
+  ): boolean {
     this.gameState = this.gameState.update(time, this.direction);
     display.syncState(lives, this.gameState);
     return this.gameState.status === 'playing';
